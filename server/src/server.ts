@@ -41,6 +41,11 @@ async function bootstrap() {
     return { count };
   });
 
+  fastify.get("/guesses/count", async () => {
+    const count = await prisma.guess.count();
+    return { count };
+  });
+
   await fastify.listen({ port: 3333 });
 }
 
