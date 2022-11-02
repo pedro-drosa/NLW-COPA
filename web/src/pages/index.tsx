@@ -1,3 +1,4 @@
+import { FormEvent, useState } from "react";
 import Image from "next/image";
 import appPreviewImg from "../assets/app-nlw-copa-preview.png";
 import logoImg from "../assets/logo.svg";
@@ -12,6 +13,26 @@ interface HomeProps {
 }
 
 export default function Home(props: HomeProps) {
+  const [poolTitle, setPoolTitle] = useState("");
+
+  async function createPool(event: FormEvent) {
+    event.preventDefault();
+    try {
+      const response = await api.post("/pools", {
+        title: poolTitle,
+      });
+
+      const { code } = response.data;
+      await navigator.clipboard.writeText(code);
+      alert(
+        "Bolão criado com sucesso, o código foi copiado para a área de transferência!"
+      );
+      setPoolTitle("");
+    } catch (error) {
+      alert("Falha ao criar o bolão, tente novamente!");
+    }
+  }
+
   return (
     <div className="max-w-[1124px] h-screen mx-auto grid grid-cols-2 gap-28 items-center">
       <main>
@@ -26,12 +47,14 @@ export default function Home(props: HomeProps) {
             já estão usando
           </strong>
         </div>
-        <form className="mt-10 flex gap-2">
+        <form onSubmit={createPool} className="mt-10 flex gap-2">
           <input
-            className="flex-1 px-6 py-4 rounded bg-gray-800 border border-gray-600 text-sm"
+            className="flex-1 px-6 py-4 rounded bg-gray-800 border border-gray-600 text-sm text-gray-100"
             type="text"
             required
             placeholder="Qual nome do seu bolão?"
+            onChange={(event) => setPoolTitle(event.target.value)}
+            value={poolTitle}
           />
           <button
             className="bg-yellow-500 px-6 py-4 rounded text-gray-900 font-bold text-sm uppercase hover:bg-yellow-700"
