@@ -6,7 +6,7 @@ import {
   Roboto_700Bold,
 } from "@expo-google-fonts/roboto";
 import { AuthContextProvider } from "./src/contexts/AuthContext";
-import { Signin } from "./src/screens/Signin";
+import { Routes } from "./src/routes";
 import { Loading } from "./src/components/Loading";
 import { THEME } from "./src/styles/theme";
 
@@ -25,7 +25,7 @@ export default function App() {
           backgroundColor="transparent"
           translucent
         />
-        {fontLoaded ? <Signin /> : <Loading />}
+        {fontLoaded ? <Routes /> : <Loading />}
       </AuthContextProvider>
     </NativeBaseProvider>
   );
